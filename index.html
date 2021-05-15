@@ -1,13 +1,197 @@
 <!DOCTYPE html>
 <html lang="">
   <head>
-    <meta charset="utf-8">
-    <title></title>
+    <link rel="stylesheet" href="index.css" />
+    <meta charset="utf-8" />
+    <title>Linear Regression</title>
   </head>
   <body>
-    <header></header>
-    <main>
-    hello, how are you</main>
+    <div>Linear Regression</div>
+    <div>
+  Linear regression is a linear model. It is used to make a
+  prediction(denoted by y) based on the given input value x. When working
+  with Linear regression we assume the relationship between the input and
+  output is linear.
+    </div>
+    <div>The Model: h(x) = m * x + c The Data: x,Y</div>
+    <div>
+  Overview of Calculation- Model Error: |h(x) - y| (Always positive) Make
+  Model More Accurate: update weight and bias based on error. (High Error =
+  High Correction) m = m + learn_rate*error*x c = c + learn_rate*error*x
+    </div>
+    <table style="width: 50%">
+      <tr>
+        <th>Variable</th>
+        <th>description</th>
+      </tr>
+      <tr>
+        <td>x</td>
+        <td>input data</td>
+      </tr>
+      <tr>
+        <td>Y</td>
+        <td>expected output</td>
+      </tr>
+      <tr>
+        <td>h(x)</td>
+        <td>prediction of model on input x</td>
+      </tr>
+      <tr>
+        <td>m</td>
+        <td>slope of line (weight)</td>
+      </tr>
+      <tr>
+        <td>c</td>
+        <td>intercept of line (bias)</td>
+      </tr>
+      <tr>
+        <td>lr</td>
+        <td>Pace of Learning. It usually lies between 0.1 - 0.0001</td>
+      </tr>
+    </table>
+    <div>
+The calculation is performed in loop for a number of iteration(we will do it for
+100). Higher iteration yields better results, but it takes longer and increases the risk of overfitting. 
+    </div>
+    <div>
+keeping number of itteration low can also be detrimental beacuse it can
+lead to underfitting.
+    </div>
+    <div>Code:</div>
+    <div>
+      <div>
+        Importing Library
+        <pre>
+import matplotlib.pyplot as plt
+import numpy as np
+import random 
+import time
+import seaborn as sns
+        </pre>
+      </div>
+      <div>
+        Misc
+        <pre>
+%matplotlib notebook    #Makes Notebook zoom-able & resize-able 
+random.seed(61)         #Generate same random numbers on multiple executions
+        </pre>
+      </div>
+      <div>
+        generating Dataset
+        <pre>
+x_data = np.array([-7.5,-2.5,4,9])
+y_data = np.array([-1.5,2.5,4.5,7])
+        </pre>
+      </div>
+      <div>
+        defining model
+        <pre>
+def run_model(x):
+global m,c
+y = m*x + c
+return y
+        </pre>
+      </div>
+      <div>
+        Define intial Value of parametrs
+        <pre>
+m = random.uniform(-1,1)
+c = random.uniform(-10,-5)
+        </pre>
+      </div>
+      <div>
+        makeing intial prediction
+        <pre>
+y_init = run_model(x_data)
+
+        </pre>
+      </div>
+      <div>
+        Plotting Intial Model and Data
+        <pre>
+fig = plt.figure()
+plt.axis([-10, 10, -10, 10])
+plt.scatter(x_data,y_data)
+plt.plot(x_data,y_init)
+fig.canvas.draw()
+        </pre>
+      </div>
+      <div>
+        defining Learn Rate and iterations/epochs
+        <pre>
+learn_rate = 0.01
+iterations = 100
+        </pre>
+      </div>
+      <div>
+        Training Model
+        <pre>
+for i in range(iterations):
+for x,t in zip(x_data,y_data):
+    y = run_model(x)
+    error = np.abs(t - y)
+    m = m + learn_rate*error*x
+    c = c + learn_rate*error
+
+y_next = run_model(x_data)
+
+line, = plt.plot(x_data,y_next)
+fig.canvas.draw()
+line.remove()
+time.sleep(0.1)
+        </pre>
+      </div>
+      <div>
+        Plotting Final Model
+        <pre>
+plt.plot(x_data,y_next)
+fig.canvas.draw()
+print(error,m,c)
+        </pre>
+      </div>
+      <div>Using scikit-learn library</div>
+      <div>
+        Importing Library
+        <pre>
+from sklearn import linear_model
+        </pre>
+      </div>
+      <div>
+        Dataset Reshaping
+        <pre>
+x_data = np.array([-7.5,-2.5,4,9]).reshape([-1, 1])
+y_data = np.array([-1.5,2.5,4.5,7]).reshape([-1, 1])
+        </pre>
+      </div>
+      <div>
+        Loading Model
+        <pre>
+regr = linear_model.LinearRegression()
+        </pre>
+      </div>
+      <div>
+        Training
+        <pre>
+regr.fit(x_data,y_data)
+        </pre>
+      </div>
+      <div>
+        Making prediction
+        <pre>
+y_pred = regr.predict(x_data)
+        </pre>
+      </div>
+      <div>
+        Plotting
+        <pre>
+fig = plt.figure()
+plt.axis([-10, 10, -10, 10])
+plt.scatter(x_data,y_data)
+plt.plot(x_data,y_pred)
+fig.canvas.draw()
+        </pre>
+      </div>
+    </div>
     <footer></footer>
   </body>
 </html>
