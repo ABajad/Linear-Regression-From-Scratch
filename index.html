@@ -6,19 +6,24 @@
     <title>Linear Regression</title>
   </head>
   <body>
-    <div>Linear Regression</div>
-    <div>
-  Linear regression is a linear model. It is used to make a
-  prediction(denoted by y) based on the given input value x. When working
-  with Linear regression we assume the relationship between the input and
-  output is linear.
-    </div>
-    <div>The Model: h(x) = m * x + c The Data: x,Y</div>
-    <div>
-  Overview of Calculation- Model Error: |h(x) - y| (Always positive) Make
-  Model More Accurate: update weight and bias based on error. (High Error =
-  High Correction) m = m + learn_rate*error*x c = c + learn_rate*error*x
-    </div>
+    <div><h1>Linear Regression</h1></div>
+    <p>
+      Linear regression is a linear model. It is used to make a
+      prediction(denoted by y) based on the given input value x. When working
+      with Linear regression we assume the relationship between the input and
+      output is linear.
+    </p>
+    <h4>The Model : <br /><code> h(x) = m * x + c</code></h4>
+    <h4>The Data : <br /><code> x,Y</code></h4>
+
+    <h3>Overview of Calculation</h3>
+    <h4>Model Error:<br /><code>|h(x) - y| (Always positive)</code></h4>
+    <h4>
+      Make Model More Accurate: <br /><code
+        >Update weight and bias based on error. (High Error -> High Correction)
+        <br />m = m + learn_rate*error*x <br />c = c + learn_rate*error*x</code
+      >
+    </h4>
     <table style="width: 50%">
       <tr>
         <th>Variable</th>
@@ -49,115 +54,132 @@
         <td>Pace of Learning. It usually lies between 0.1 - 0.0001</td>
       </tr>
     </table>
-    <div>
-The calculation is performed in loop for a number of iteration(we will do it for
-100). Higher iteration yields better results, but it takes longer and increases the risk of overfitting. 
-    </div>
-    <div>
-keeping number of itteration low can also be detrimental beacuse it can
-lead to underfitting.
-    </div>
-    <div>Code:</div>
+    <p>
+      The calculation is performed in loop for a number of iteration(we will do
+      it for 100). Higher iteration yields better results, but it takes longer
+      and increases the risk of overfitting.
+    </p>
+    <p>
+      keeping number of itteration low can also be detrimental beacuse it can
+      lead to underfitting.
+    </p>
+    <h2>
+      Code :
+      <br /><a
+        href="https://colab.research.google.com/github/ABajad/Blog/blob/main/Linear%20Regression.ipynb"
+        target="_blank"
+        style="font-weight: normal; font-size: 15px; margin: 0 0 0 0"
+        >Open notebook in Colab</a
+      >
+    </h2>
+
+    <h3 style="font-size: 25px; margin: 0 0 0 0">
+      Linear regression from Scratch
+    </h3>
     <div>
       <div>
+        <br />
         Importing Library
         <pre>
-import matplotlib.pyplot as plt
-import numpy as np
-import random 
+import matplotlib.pyplot as plt       #Creating Plots
+import numpy as np                    #Working with numeric array
+import random
 import time
-import seaborn as sns
         </pre>
       </div>
       <div>
         Misc
         <pre>
-%matplotlib notebook    #Makes Notebook zoom-able & resize-able 
-random.seed(61)         #Generate same random numbers on multiple executions
+%matplotlib notebook                  #Makes Notebook zoom-able & resize-able 
+random.seed(61)                       #Generate same random numbers on multiple executions
         </pre>
       </div>
       <div>
-        generating Dataset
+        Generating Dataset
         <pre>
-x_data = np.array([-7.5,-2.5,4,9])
-y_data = np.array([-1.5,2.5,4.5,7])
+x_data = np.array([-7.5,-2.5,4,9])    #Input data
+y_data = np.array([-1.5,2.5,4.5,7])   #Output data
         </pre>
       </div>
       <div>
-        defining model
+        Defining model
         <pre>
 def run_model(x):
-global m,c
-y = m*x + c
-return y
+  global m,c                          #Making Variable Global for Simplicity
+  y = m*x + c                         #Predicting value(Output)
+  return y                            #Returning prediction
         </pre>
       </div>
       <div>
         Define intial Value of parametrs
         <pre>
-m = random.uniform(-1,1)
-c = random.uniform(-10,-5)
+m = random.uniform(-1,1)              #Random slope, Dosen't really matter
+c = random.uniform(-10,-5)            #Random intercept
         </pre>
       </div>
       <div>
-        makeing intial prediction
+        Makeing intial prediction
         <pre>
-y_init = run_model(x_data)
+y_init = run_model(x_data)            #Prediction with randomly Generated m and c
 
         </pre>
       </div>
       <div>
         Plotting Intial Model and Data
         <pre>
-fig = plt.figure()
-plt.axis([-10, 10, -10, 10])
-plt.scatter(x_data,y_data)
-plt.plot(x_data,y_init)
-fig.canvas.draw()
+fig = plt.figure()                    #Create a new figure
+plt.axis([-10, 10, -10, 10])          #Size of plot
+plt.scatter(x_data,y_data)            #Plotting data
+plt.plot(x_data,y_init)               #Plotting model
+fig.canvas.draw()                     #Rendering plot
         </pre>
       </div>
       <div>
-        defining Learn Rate and iterations/epochs
+        Defining Learn Rate and iterations/epochs
         <pre>
-learn_rate = 0.01
-iterations = 100
+learn_rate = 0.01                     #Rate of learning
+iterations = 100                      #Number of Epochs
         </pre>
       </div>
       <div>
         Training Model
         <pre>
-for i in range(iterations):
-for x,t in zip(x_data,y_data):
-    y = run_model(x)
-    error = np.abs(t - y)
-    m = m + learn_rate*error*x
-    c = c + learn_rate*error
+for i in range(iterations):           #Loop to iterate
+  for x,t in zip(x_data,y_data):      #Loop through data
+      y = run_model(x)                #Making prediction
+      error = np.abs(t - y)           #Error in prediction, Absolute difference of prediction and true value
+      m = m + learn_rate*error*x      #Updating slope
+      c = c + learn_rate*error        #Updating intercept
+      time.sleep(0.1)                 #Slowing down training, You can comment this out 
+  
+  y_next = run_model(x_data)          #Prediction on Updated Model for Plotting            
 
-y_next = run_model(x_data)
-
-line, = plt.plot(x_data,y_next)
-fig.canvas.draw()
-line.remove()
-time.sleep(0.1)
+  line, = plt.plot(x_data,y_next)     #Plotting new model
+  fig.canvas.draw()                   #Rendering plot
+  line.remove()                       #Removing Model
         </pre>
       </div>
       <div>
         Plotting Final Model
         <pre>
-plt.plot(x_data,y_next)
-fig.canvas.draw()
-print(error,m,c)
+plt.plot(x_data,y_next)               #Plotting final model
+fig.canvas.draw()                     #Rendering plot
+print(error,m,c)                      #Printing model parameters(slope and intercept) 
         </pre>
       </div>
-      <div>Using scikit-learn library</div>
+      <h3 style="font-size: 25px; margin: 0 0 0 0">
+        <br />
+        Using scikit-learn library
+      </h3>
       <div>
+        <br />
         Importing Library
         <pre>
 from sklearn import linear_model
         </pre>
       </div>
       <div>
-        Dataset Reshaping
+        Generating and reshaping Dataset
         <pre>
 x_data = np.array([-7.5,-2.5,4,9]).reshape([-1, 1])
 y_data = np.array([-1.5,2.5,4.5,7]).reshape([-1, 1])
